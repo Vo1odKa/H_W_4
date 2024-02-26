@@ -32,12 +32,10 @@ class CustomHTTPHandler(BaseHTTPRequestHandler):
             data = self.rfile.read(content_length).decode('utf-8')
             form_data = urllib.parse.parse_qs(data)
 
-            # Визначення значень username, email та message
             username = form_data.get('username', [''])[0]
             email = form_data.get('email', [''])[0]
             message = form_data.get('message', [''])[0]
 
-            # Пересилання даних на сервер сокетів
             self.forward_to_socket_server({
                 'username': username,
                 'email': email,
@@ -108,7 +106,6 @@ class SocketServer(threading.Thread):
 
         data[timestamp] = form_data
 
-        # Зберігаємо оновлений словник у data.json
         with open('storage/data.json', 'w') as file:
             json.dump(data, file, indent=2)
 def run_servers():
